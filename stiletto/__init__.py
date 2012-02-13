@@ -76,16 +76,3 @@ class PreRenderedURLMapper(object):
             m.render(urlconf, output_path)
 
 
-if __name__ == "__main__":
-    from django.http import HttpResponse
-    def foo(request, slug):
-        return slug
-        #return HttpResponse(str(foo), content_type="application/xhtml+xml")
-
-    def buz(request, slug):
-        return slug + " -> " + slug
-
-    mapper = PrerenderedURLMapper([ PreRenderedURL("foo/(?P<slug>.*).html$", lambda: ( (x,) for x in range(25)), foo, "foo") ], prefix= "staticmodule/")
-    mapper2 = PrerenderedURLMapper([ PreRenderedURL("buz/(?P<slug>.*).html$", lambda: ( (x,) for x in range(12)), buz, "buz") ], prefix= "staticmodule/")
-    mapper.include("prefix", mapper2)
-    mapper.render("/tmp/stiletto")
