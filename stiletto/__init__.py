@@ -67,7 +67,7 @@ class PreRenderedURLMapper(object):
         module = imp.new_module("stiletto_url_" + str(uuid.uuid4()).replace("-","_"))
         inner_module = imp.new_module("stiletto_url_" + str(uuid.uuid4()).replace("-","_"))
         inner_module.urlpatterns = patterns( '', *self.urls() )
-        module.urlpatterns = patterns('', (self.prefix, include(inner_module)))
+        module.urlpatterns = patterns('', ('', include(inner_module)))
         return module
 
     def render(self, output_path):
