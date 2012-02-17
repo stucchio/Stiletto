@@ -22,8 +22,8 @@ class PreRenderedURL(object):
         self.view = view
         self.name = name
 
-    def url(self):
-        return url(self.pattern, self.view, name=self.name)
+    def url(self, prefix=''):
+        return url(prefix+self.pattern, self.view, name=self.name)
 
     def __call_view__(self, reversed, urlconf):
         url_resolution = resolve(reversed, urlconf)
@@ -55,7 +55,7 @@ class PreRenderedURLMapper(object):
         self.prefix = prefix
 
     def urls(self):
-        return [m.url() for m in self.mapping]
+        return [m.url(self.prefix) for m in self.mapping]
 
     def include(self, prefix, other):
         for m in other.mapping:

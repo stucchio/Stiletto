@@ -19,6 +19,6 @@ def blogpost_id_iterator():
 
 static_urlpatterns = PreRenderedURLMapper([
     PreRenderedURL("blogpost/(?P<id>.*).html$", blogpost_id_iterator, view_blogpost, "blogpost_static")
-    ], prefix="staticmodule/")
+    ], prefix="pre_rendered_files/")
 
 urlpatterns += static_urlpatterns.urls()

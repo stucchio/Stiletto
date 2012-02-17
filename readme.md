@@ -16,14 +16,14 @@ You are then free to point nginx directly at the files.
 
     static_urlpatterns = PrerenderedURLMapper([
             PreRenderedURL("foo/(?P<slug>.*).html$", foo_slug_iterator, foo, "foo")
-            ], prefix="staticmodule/")
+            ], prefix="pre_rendered_files/")
 
     urlpatterns += static_urlpatterns.urls()
 
 The `foo_slug_iterator` should return an iterator which yields the slugs for which the foo view should be rendered.
 
-The line `urlpatterns += static_urlpatterns.urls()` is necessary so that the `{% url "foo" %} tag works properly, in both static and dynamic pages.
-The result of `{% url "foo" "slug" %}` will be `/staticmodule/foo/slug`.
+The line `urlpatterns += static_urlpatterns.urls()` is necessary so that the `{% url "foo" %}` tag works properly, in both static and dynamic pages.
+The result of `{% url "foo" "slug" %}` will be `/"pre_rendered_files/foo/slug`.
 
     # settings.py
 
