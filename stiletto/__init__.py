@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse, resolve
 from django.conf.urls.defaults import patterns, url, include
+from django.shortcuts import render_to_response
 
 import os
 import imp
@@ -14,6 +15,16 @@ class StilettoURLPrerenderedException(Exception):
 
 def __null_view__(request, *args, **kwargs):
     raise StilettoURLPrerenderedException("The page " + request.path + " was rendered by Django, rather than served by the static webserver. This should never occur.")
+
+def null_iterator():
+    yield tuple([])
+
+class SimpleTemplate(object):
+    def __init__(self, template_name):
+        self.template_name = template_name
+
+    def __call__(self, request):
+        return render_to_response(self.template_name, {})
 
 class PreRenderedURL(object):
     def __init__(self, pattern, param_iterator, view, name):
