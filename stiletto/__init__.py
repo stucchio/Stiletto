@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse, resolve
 from django.conf.urls.defaults import patterns, url, include
 from django.shortcuts import render_to_response
+from django.http import HttpRequest
 
 import os
 import imp
@@ -38,7 +39,11 @@ class PreRenderedURL(object):
 
     def __call_view__(self, reversed, urlconf):
         url_resolution = resolve(reversed, urlconf)
-        return url_resolution.func(None, *url_resolution.args, **url_resolution.kwargs)
+        request = HttpRequest()
+        request.path = reversed
+        request.method = 'GET'
+        request.GET = {}
+        return url_resolution.func(request, *url_resolution.args, **url_resolution.kwargs)
 
     def render(self, urlconf, output_path = ""):
         log.info('Rendering urls mapped by "' + self.pattern + '"')
